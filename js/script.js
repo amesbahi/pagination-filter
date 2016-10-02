@@ -24,7 +24,7 @@ console.log(students);
 
 
 // Search
-var searchHTML = '<input placeholder="Search for students...">' + ' <button>Search</button>';
+var searchHTML = '<input id="search-input" placeholder="Search for students...">' + ' <button class="search-button">Search</button>';
 document.getElementById("student-search").innerHTML = searchHTML;
 
 
@@ -52,7 +52,8 @@ for (var i = 0; i < allStudents.length; i++) {
   if (i % 10 === 0) {
     currentPageNum += 1;
   }
-  student.className += " page-" + currentPageNum;
+  student.className += " page-" + currentPageNum; /******** QUESTION for trevor: how can this be appended to student detail
+  if the condition hasn't been met yet until first iteration of 10? **************/
 }
 
 function onPageClick(pageNum) { // When we click on a pagination link, do this
@@ -63,8 +64,20 @@ function onPageClick(pageNum) { // When we click on a pagination link, do this
 }
 console.log(paginationHTML);
 
+// on page load, show only the first 10 students
 $(document).ready(function() {
-  // on page load, show only the first 10 students
   console.log("ready!"); // debug
   $("ul li.student-item").not(".page-1").hide();
+});
+
+// add an event listener to the search button
+var searchButton = document.getElementsByClassName("search-button");
+var searchInput = document.getElementById("search-input");
+searchButton.addEventListener("click", function() {
+  if (searchInput.value.toLowerCase() === $("ul li div.student-details h3").innerText ||
+      searchInput.value.toLowerCase() === $("ul li div.student-details span").innerText) {
+    var textInputted = searchInput.value.toLowerCase();
+    $("ul li div.student-details h3" && "ul li div.student-details span" === textInputted).show();
+    $("ul li div.student-details h3" && "ul li div.student-details span" != textInputted).hide();
+  }
 });
