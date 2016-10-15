@@ -1,31 +1,11 @@
 
-console.log("hi!");
-
 // DOM list of divs containing each student detail
 var studentDetails = document.querySelectorAll('.student-details');
 console.log(studentDetails);
 
-var students = [];
-
-for (var i = 0; i < studentDetails.length; i++) {
-  // Single div containing a student detail
-  var studentDetail = studentDetails[i]; // div
-  // storing the names and emails for search
-  var studentEmail = studentDetail.getElementsByTagName('span')[0].innerText;
-  var studentName = studentDetail.getElementsByTagName('h3')[0].innerText;
-  // creating a new student object for search
-  var student = {
-    name: studentName,
-    email: studentEmail
-  };
-  students.push(student);
-}
-console.log(students);
-
-
 // Search
-var searchHTML = '<input id="search-input" placeholder="Search for students...">' + ' <button class="search-button">Search</button>';
-document.getElementById("student-search").innerHTML = searchHTML;
+var searchHTML = '<input id="search-input" placeholder="Search for students...">' + ' <button id="search-button">Search</button>';
+$("#student-search").html(searchHTML);
 
 
 // pagination functionality
@@ -40,7 +20,7 @@ for (var i = 0; i < numberOfPages; i++) {
   paginationHTML += '<li onclick="onPageClick(' + (i + 1) +  ')"><a class="pagination">' + (i + 1) + '</a></li>\n';
 }
 paginationHTML += '</ul>';
-document.getElementById("pagination").innerHTML = paginationHTML;
+$("#pagination").html(paginationHTML);
 
 
 // create for loop adding order of pagination classes to each student
@@ -52,8 +32,7 @@ for (var i = 0; i < allStudents.length; i++) {
   if (i % 10 === 0) {
     currentPageNum += 1;
   }
-  student.className += " page-" + currentPageNum; /******** QUESTION for trevor: how can this be appended to student detail
-  if the condition hasn't been met yet until first iteration of 10? **************/
+  student.className += " page-" + currentPageNum;
 }
 
 function onPageClick(pageNum) { // When we click on a pagination link, do this
@@ -71,13 +50,29 @@ $(document).ready(function() {
 });
 
 // add an event listener to the search button
-var searchButton = document.getElementsByClassName("search-button");
-var searchInput = document.getElementById("search-input");
-searchButton.addEventListener("click", function() {
-  if (searchInput.value.toLowerCase() === $("ul li div.student-details h3").innerText ||
-      searchInput.value.toLowerCase() === $("ul li div.student-details span").innerText) {
-    var textInputted = searchInput.value.toLowerCase();
-    $("ul li div.student-details h3" && "ul li div.student-details span" === textInputted).show();
-    $("ul li div.student-details h3" && "ul li div.student-details span" != textInputted).hide();
-  }
+var $searchButton = $("#search-button");
+var $searchInput = $("#search-input");
+$searchButton[0].addEventListener("click", function() {
+  // Search functionality
+  var $students = $(".student-item"); // arry containing all of the students
+  var searchString = $searchInput.val().toLowerCase(); // storing the search value in a variable
+  $.each($students, function(index, student) {  // Looping over the students
+    console.log(index, student);
+    var $student = $(student);
+    var findStudent = $student.find("h3").text();  // eg "alborz foo"
+    var findEmail = $student.find("span.email").text();
+    console.log(findStudent, findEmail);
+    if (findStudent.indexOf(searchString) >= 0 || findEmail.indexOf(searchString) >= 0) {
+      $(student).show();
+    } else {
+      $(student).hide();
+    }
+  });
 });
+
+
+
+
+
+
+
