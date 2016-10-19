@@ -7,41 +7,12 @@ console.log(studentDetails);
 var searchHTML = '<input id="search-input" placeholder="Search for students...">' + ' <button id="search-button">Search</button>';
 $("#student-search").html(searchHTML);
 
-
-// pagination functionality
-var studentsPerPage = 10 // Number of students per page to render
-var allStudents = document.querySelectorAll('.student-item');
-var numberOfPages = Math.ceil(allStudents.length / studentsPerPage);
-console.log(numberOfPages);
-
-// HTML for pagination
-var paginationHTML = '<ul>';
-for (var i = 0; i < numberOfPages; i++) {
-  paginationHTML += '<li onclick="onPageClick(' + (i + 1) +  ')"><a class="pagination">' + (i + 1) + '</a></li>\n';
-}
-paginationHTML += '</ul>';
-$("#pagination").html(paginationHTML);
-
-
-// create for loop adding order of pagination classes to each student
-var currentPageNum = 0;
-for (var i = 0; i < allStudents.length; i++) {
-  var student = allStudents[i];
-  console.log(student);
-  // every 10 iterations of loop bump up currentPageNum by 1
-  if (i % 10 === 0) {
-    currentPageNum += 1;
-  }
-  student.className += " page-" + currentPageNum;
-}
-
 function onPageClick(pageNum) { // When we click on a pagination link, do this
   $('.student-item').hide(); // hide all of the students here using jquery
   console.log(pageNum);
   // if user clicks on a pagination link with a certain class, show students with a certain class
   $('.page-' + pageNum).show();
 }
-console.log(paginationHTML);
 
 // on page load, show only the first 10 students
 $(document).ready(function() {
@@ -68,11 +39,71 @@ $searchButton[0].addEventListener("click", function() {
       $(student).hide();
     }
   });
+
+  searchPaginationResults();
 });
 
+var searchPaginationResults = function() {
+    // Pagination Functionality
+  var studentsPerPage = 10 // Number of students per page to render
+  var $allStudents = $('.student-item');
+  var numberOfPages = Math.ceil($allStudents.length / studentsPerPage);
+  console.log(numberOfPages);
+
+  // HTML for pagination
+  var paginationHTML = '<ul>';
+  for (var i = 0; i < numberOfPages; i++) {
+    paginationHTML += '<li onclick="onPageClick(' + (i + 1) +  ')"><a class="pagination">' + (i + 1) + '</a></li>\n';
+  }
+  paginationHTML += '</ul>';
+  $("#pagination").html(paginationHTML);
+
+
+  // create for loop adding order of pagination classes to each student
+  var currentPageNum = 0;
+  for (var i = 0; i < $allStudents.length; i++) {
+    var student = $allStudents[i];
+    console.log(student);
+    // every 10 iterations of loop bump up currentPageNum by 1
+    if (i % 10 === 0) {
+      currentPageNum += 1;
+    }
+    student.className += " page-" + currentPageNum;
+  }
+}
+
+searchPaginationResults();
 
 
 
 
+/*function foo() {}
+
+var foo5 = function() {};
+var bar = () => {}*/
 
 
+// 
+// add(1,1)   // 2
+// add(2,3)   // 5
+// 
+function add(a, b) {
+  return a + b;
+}
+
+// 
+// addThreeNums(1,1,1)  // 3
+// addThreeNums(2,3,4)  // 9
+//
+function addThreeNums(x, y, z) {
+  var g = add(x, y);
+
+  //return g + z;
+  return add(g, z);
+}
+
+
+
+// capture the search results
+// pass that into the searchPaginationResults function
+// display paginated results if there are more than 10 students
