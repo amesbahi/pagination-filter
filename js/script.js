@@ -39,7 +39,6 @@ $searchButton[0].addEventListener("click", function() {
       studentsArray.push($(student));
     } else {
       $(student).hide();
-      $("body").html("<h1>No results found.</h1>");
     }
   });
 
